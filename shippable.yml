@@ -1,19 +1,275 @@
 language: python
 
-build:
-
-  pre_ci_boot:
-    image_name: drydock/u16
-    image_tag: master
-    pull: true
+runtime:
+  - nodePool: dynamic__x86_64__Ubuntu_14_04__c4_large
+    build:
+      pre_ci:
+        - echo "pre-ci from runtimeBuild section"
+        - preCi=buildPreCi
+        - echo preCi=$preCi
+        - docker build -t=$IMAGE_NAME:$IMAGE_TAG .
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
     
-  ci:   
-    - python --version 
+      pre_ci_boot:
+        image_name: drydock/u14
+        image_tag: master
+        env: envInPreCiBootBuild=bar
+        pull: $IMAGE_PULL
+        options: '--privileged=true --net=bridge -e FOO=true -e BOO=false'
+    
+      ci:
+        - python -V
+        - echo "ci from runtimeBuild section"
+        - docker pull shippabledocker/sample_node_pvt:ecr
+        - echo "env1=$env1"
+        - echo "preCi=$preCi"
+       # - if [ $preCi == "buildPreCi" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi  
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+        - if [ "$SHIPPABLE_PYTHON_VERSION" == "pypy3" ]; then testfail; fi
+    
+      post_ci:
+        - echo "post-ci from runtimeBuild section"
+        - docker push $IMAGE_NAME:$IMAGE_TAG
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    
+      on_success:
+        - echo "on-success from runtimeBuild section"
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi \
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    
+      on_failure:
+        - echo "on-failure from runtimeBuild section"
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+      
+      always:
+        - echo "always from runtimeBuild section"
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+     
+      push:
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+        
+  - nodePool: default_node_pool
+    build:
+      pre_ci:
+        - echo "pre-ci from runtimeBuildsection"
+        - preCi=buildPreCi
+        - echo preCi=$preCi
+        - docker build -t=$IMAGE_NAME:$IMAGE_TAG .
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    
+      pre_ci_boot:
+        image_name: drydock/u16
+        image_tag: master
+        env: envInPreCiBootBuild=bar
+        pull: $IMAGE_PULL
+        options: '--privileged=true --net=bridge -e FOO=true -e BOO=false'
+    
+      ci:
+        - python -V
+        - echo "ci from runtimeBuild section"
+        - docker pull shippabledocker/sample_node_pvt:ecr
+        - echo "env1=$env1"
+        - echo "preCi=$preCi"
+       # - if [ $preCi == "buildPreCi" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi  
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+        - if [ "$SHIPPABLE_PYTHON_VERSION" == "pypy3" ]; then testfail; fi
+    
+      post_ci:
+        - echo "post-ci from runtimeBuild section"
+        - docker push $IMAGE_NAME:$IMAGE_TAG
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    
+      on_success:
+        - echo "on-success from runtimeBuild section"
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi \
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    
+      on_failure:
+        - echo "on-failure from runtimeBuild section"
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    
+      always:
+        - echo "always from runtimeBuild section"
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+     
+      push:
+        - echo "push from runtimeBuild section" 
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+        
+  - nodePool: dynamic__x86_64__CentOS_7__c4_large
+    build:
+      pre_ci:
+        - echo "pre-ci from runtimeBuildsection"
+        - preCi=buildPreCi
+        - echo preCi=$preCi
+        - docker build -t=$IMAGE_NAME:$IMAGE_TAG .
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    
+      pre_ci_boot:
+        image_name: drydock/c7
+        image_tag: master
+        env: envInPreCiBootBuild=bar
+        pull: $IMAGE_PULL
+        options: '--privileged=true --net=bridge -e FOO=true -e BOO=false'
+        
+      ci:
+        - python -V
+        - echo "ci from runtimeBuild section"
+        - docker pull shippabledocker/sample_node_pvt:ecr
+        - echo "env1=$env1"
+        - echo "preCi=$preCi"
+       # - if [ $preCi == "buildPreCi" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi  
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+        - if [ "$SHIPPABLE_PYTHON_VERSION" == "pypy3" ]; then testfail; fi
+      
+      post_ci:
+        - echo "post-ci from runtimeBuild section"
+        - docker push $IMAGE_NAME:$IMAGE_TAG
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+        
+      on_success:
+        - echo "on-success from runtimeBuild section"
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi \
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    
+      on_failure:
+        - echo "on-failure from runtimeBuild section"
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    
+      always:
+        - echo "always from runtimeBuild section"
+        - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+        - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+ 
+env:
+  global:
+  #Testing for user defined envs and secure envs
+    - TEST1=EnvFoo
+    - env1=valueFromEnvGlobal
+    - secure: WW/f74KB+/rBPWMpL+hs9PYmO98Hd2PbeGkVMDDaOaDVOYkePjy4xM+NF/06EVsh6wwz1ToihClh1xltrcmfz/JNiSA2pciDksDElSPLzeq5qg4NYeNuLnmziR68AtTadrrZuPOKsT69GcoAvFYX1ZvtYQ4YGBOtbr9a+5lD1jFguv9HcUiDeB3uJLvYVqMsa1tccecvePNfbvVQNAPVB3TMEtU8cJtQyPkK1x448E5aYV9IpY1kc1PmDyDBzlVPxlAIDeND5rXzJafZpnTbPyVU9EnfaY1eXU3/FW6cVCvBzhIXdUF9IChGdG+aiXK3p+BnDlh3Og+6HUUZFZvF4A== 
+      #secure env key and value ----> TEST2=EnvSecure
+    - IMAGE_NAME=shippabledocker/sample_node_pvt
+    - IMAGE_TAG=latest.40
+    - IMAGE_PULL=true     
+  
+  matrix:
+    - M1=ONE
+
+addons: 
+  firefox: "25.0" #its not working for restricted nodePools
+  
+matrix:
+#include this version with the env 
+  include:               
+    - python: pypy #this cant trigger 3 builds for multiple node pool. Include section purpose is trigger something in single build not as matrix. if we apply multiple node pool here it might end up in triggering in matrix so doesnt apply.
+      env: 
+        - M1=ONE #just to pass build Since this is in include section it wont take matrix environment variable and value so adding same env n value here. since in all section we are verifing env n value
+        - env1=OneValueFromInclude
+#excludes this version 
+  exclude:             
+    - python: 3.7
+      env:
+        - env1=valuefromexcludesection
+#allows failure for this version
+  allow_failures: 
+    - python: pypy3
+      nodePool: dynamic__x86_64__Ubuntu_14_04__c4_large
+    - python: pypy3
+      nodePool: dynamic__x86_64__CentOS_7__c4_large
+    - python: pypy3
+      nodePool: default_node_pool
+
+build:
+  pre_ci: #commenting them since i cant override these section in restricted node pool
+    - echo "pre-ci section"
+    - docker build -t=$IMAGE_NAME:$IMAGE_TAG .
+    - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+    - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+    - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    
+  pre_ci_boot:  #commenting them since i cant override these section in restricted node pool
+    image_name: drydock/u16all
+    image_tag: master
+    env: envInPreCiBoot=bar
+    pull: $IMAGE_PULL
+    options: '--privileged=true --net=bridge -e FOO=true -e BOO=false'
+    
+  ci:
+    - python -V
+    - echo "ci section"
     - docker pull shippabledocker/sample_node_pvt:ecr
+    - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+    - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi  
+    - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    - if [ "$SHIPPABLE_PYTHON_VERSION" == "pypy3" ]; then testfail; fi
+    
+  post_ci:  #commenting them since i cant override these section in restricted node pool
+    - echo "post-ci section"
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+    - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+    - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+    - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    
+  on_success:
+    - echo "on-success section"
+    - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+    - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi \
+    - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    
+  on_failure:
+    - echo "on-failure section"
+    - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+    - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+    - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
+    
+  cache: true
+  cache_dir_list:
+    - $SHIPPABLE_BUILD_DIR/shippable.yml
+   
+  push:  #commenting them since i cant override these section in restricted node pool
+    - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
+    - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
+    - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
     
 integrations:
-    
   hub:
+
  #Docker integration
     - integrationName: ship-docker
       type: dockerRegistryLogin
