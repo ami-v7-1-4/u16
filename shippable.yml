@@ -142,19 +142,16 @@ runtime:
       on_success:
         - echo "on-success from runtimeBuild section"
         - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
-        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi \
         - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
     
       on_failure:
         - echo "on-failure from runtimeBuild section"
         - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
-        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
         - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
     
       always:
         - echo "always from runtimeBuild section"
         - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
-        - if [ $TEST2 == "EnvSecure" ]; then echo 'success'; else testfail; fi 
         - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
  
 env:
