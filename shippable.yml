@@ -1,4 +1,4 @@
-language: python
+language: none
 
 runtime:
   - nodePool: dynamic__x86_64__Ubuntu_14_04__c4_large
@@ -166,28 +166,6 @@ env:
   matrix:
     - M1=ONE
   
-matrix:
-#include this version with the env 
-  include:               
-    - python: pypy #this cant trigger 3 builds for multiple node pool. Include section purpose is trigger something in single build not as matrix. if we apply multiple node pool here it might end up in triggering in matrix so doesnt apply.
-      nodePool: default_node_pool
-      env:
-        - M1=ONE #just to pass build Since this is in include section it wont take matrix environment variable and value so adding same env n value here. since in all section we are verifing env n value
-        - env1=OneValueFromInclude
-#excludes this version 
-  exclude:             
-    - python: 3.7
-      env:
-        - env1=valuefromexcludesection
-#allows failure for this version
-  allow_failures: 
-    - python: pypy3
-      nodePool: dynamic__x86_64__Ubuntu_14_04__c4_large
-    - python: pypy3
-      nodePool: dynamic__x86_64__CentOS_7__c4_large
-    - python: pypy3
-      nodePool: default_node_pool
-
 build:
   pre_ci: #commenting them since i cant override these section in restricted node pool
     - echo "pre-ci section"
