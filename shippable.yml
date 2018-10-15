@@ -168,9 +168,6 @@ env:
   
   matrix:
     - M1=ONE
-
-addons: 
-  firefox: "25.0" #its not working for restricted nodePools
   
 matrix:
 #include this version with the env 
