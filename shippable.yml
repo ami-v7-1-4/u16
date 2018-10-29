@@ -182,7 +182,18 @@ build:
     
   ci:
     - python -V
-    - echo "ci section"
+    - docker ps
+    - docker images
+    - node --version
+    - javac -version
+    - source /usr/local/rvm/scripts/rvm
+    - ruby --version
+    - gcloud version
+    - aws --version
+    - packer --version
+    - jq --version
+    - kubectl version --client
+    - docker --version
     - docker pull shippabledocker/sample_node_pvt:ecr
     - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
     - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
