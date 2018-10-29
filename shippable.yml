@@ -21,6 +21,18 @@ runtime:
       ci:
         - python -V
         - echo "ci from runtimeBuild section"
+        - docker ps
+        - docker images
+        - node --version
+        - javac -version
+        - source /usr/local/rvm/scripts/rvm
+        - ruby --version
+        - gcloud version
+        - aws --version
+        - packer --version
+        - jq --version
+        - kubectl version --client
+        - docker --version
         - docker pull shippabledocker/sample_node_pvt:ecr
         - echo "env1=$env1"
         - echo "preCi=$preCi"
@@ -73,6 +85,18 @@ runtime:
       ci:
         - python -V
         - echo "ci from runtimeBuild section"
+        - docker ps
+        - docker images
+        - node --version
+        - javac -version
+        - source /usr/local/rvm/scripts/rvm
+        - ruby --version
+        - gcloud version
+        - aws --version
+        - packer --version
+        - jq --version
+        - kubectl version --client
+        - docker --version
         - docker pull shippabledocker/sample_node_pvt:ecr
         - echo "env1=$env1"
         - echo "preCi=$preCi"
@@ -126,6 +150,18 @@ runtime:
       ci:
         - python -V
         - echo "ci from runtimeBuild section"
+        - docker ps
+        - docker images
+        - node --version
+        - javac -version
+        - source /usr/local/rvm/scripts/rvm
+        - ruby --version
+        - gcloud version
+        - aws --version
+        - packer --version
+        - jq --version
+        - kubectl version --client
+        - docker --version
         - docker pull shippabledocker/sample_node_pvt:ecr
         - echo "env1=$env1"
         - echo "preCi=$preCi"
