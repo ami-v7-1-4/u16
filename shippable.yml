@@ -29,7 +29,7 @@ runtime:
         - ruby --version
         - gcloud version
         - aws --version
-        - packer.io --version
+        - packer --version
         - jq --version
         - kubectl version --client
         - docker --version
@@ -93,7 +93,7 @@ runtime:
         - ruby --version
         - gcloud version
         - aws --version
-        - packer.io --version
+        - packer --version
         - jq --version
         - kubectl version --client
         - docker --version
@@ -226,7 +226,7 @@ build:
     - ruby --version
     - gcloud version
     - aws --version
-    - packer.io --version
+    - packer --version
     - jq --version
     - kubectl version --client
     - docker --version
