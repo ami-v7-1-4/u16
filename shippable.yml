@@ -39,6 +39,9 @@ runtime:
         - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi  
         - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
         - if [ "$SHIPPABLE_PYTHON_VERSION" == "pypy3" ]; then testfail; fi
+        - EXPECTED_DOCKER_VERSION="18.03.1-ce"
+        - |
+          [ $(docker version --format {{.Server.Version}}) == "$EXPECTED_DOCKER_VERSION" ]
     
       post_ci:
         - echo "post-ci from runtimeBuild section"
@@ -103,6 +106,9 @@ runtime:
         - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi  
         - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
         - if [ "$SHIPPABLE_PYTHON_VERSION" == "pypy3" ]; then testfail; fi
+        - EXPECTED_DOCKER_VERSION="18.03.1-ce"
+        - |
+          [ $(docker version --format {{.Server.Version}}) == "$EXPECTED_DOCKER_VERSION" ]
     
       post_ci:
         - echo "post-ci from runtimeBuild section"
@@ -168,6 +174,9 @@ runtime:
         - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi 
         - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
         - if [ "$SHIPPABLE_PYTHON_VERSION" == "pypy3" ]; then testfail; fi
+        - EXPECTED_DOCKER_VERSION="18.03.1-ce"
+        - |
+          [ $(docker version --format {{.Server.Version}}) == "$EXPECTED_DOCKER_VERSION" ]
       
       post_ci:
         - echo "post-ci from runtimeBuild section"
@@ -234,6 +243,9 @@ build:
     - if [ $TEST1 == "EnvFoo" ]; then echo 'success'; else testfail; fi
     - if [ $M1 == "ONE" ]; then echo 'success'; else testfail; fi 
     - if [ "$SHIPPABLE_PYTHON_VERSION" == "pypy3" ]; then testfail; fi
+    - EXPECTED_DOCKER_VERSION="18.03.1-ce"
+    - |
+          [ $(docker version --format {{.Server.Version}}) == "$EXPECTED_DOCKER_VERSION" ]
     
   post_ci:  #commenting them since i cant override these section in restricted node pool
     - echo "post-ci section"
