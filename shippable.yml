@@ -87,7 +87,7 @@ runtime:
     
       ci:
         - python -V
-        - echo "ci from runtimeBuild section"
+        - echo "CI from runtimeBuild section"
         - docker ps
         - docker images
         - node --version
